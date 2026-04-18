@@ -66,6 +66,7 @@ import {
   recompileWithResolutions,
   discoverMediaFromBrowser,
   type CompiledComposition,
+  isPathInsideDir,
 } from "./htmlCompiler.js";
 import { defaultLogger, type ProducerLogger } from "../logger.js";
 
@@ -266,7 +267,7 @@ function writeCompiledArtifacts(
   // so the file server can serve them.
   for (const [relativePath, absolutePath] of compiled.externalAssets) {
     const outPath = resolve(join(compileDir, relativePath));
-    if (!outPath.startsWith(compileDir + "/")) {
+    if (!isPathInsideDir(compileDir, outPath)) {
       console.warn(`[Render] Skipping external asset with unsafe path: ${relativePath}`);
       continue;
     }

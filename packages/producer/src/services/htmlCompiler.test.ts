@@ -2,7 +2,12 @@ import { describe, expect, it, mock, beforeAll } from "bun:test";
 import { mkdtempSync, writeFileSync, mkdirSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { collectExternalAssets, inlineExternalScripts } from "./htmlCompiler.js";
+import {
+  collectExternalAssets,
+  inlineExternalScripts,
+  isPathInsideDir,
+  toExternalAssetKey,
+} from "./htmlCompiler.js";
 
 // ── collectExternalAssets ──────────────────────────────────────────────────
 
@@ -119,6 +124,20 @@ describe("collectExternalAssets", () => {
 });
 
 // ── inlineExternalScripts ──────────────────────────────────────────────────
+
+describe("path helpers", () => {
+  it("treats Windows-style child paths as being inside the parent directory", () => {
+    expect(
+      isPathInsideDir("D:\\coder\\reactGin\\hyperframes\\reading", "D:\\coder\\reactGin\\hyperframes\\reading\\assets\\segment_001.wav"),
+    ).toBe(true);
+  });
+
+  it("creates Windows-safe external asset keys", () => {
+    expect(toExternalAssetKey("D:\\coder\\reactGin\\hyperframes\\reading\\assets\\segment_001.wav")).toBe(
+      "hf-ext/D/coder/reactGin/hyperframes/reading/assets/segment_001.wav",
+    );
+  });
+});
 
 describe("inlineExternalScripts", () => {
   it("returns HTML unchanged when no external scripts exist", async () => {

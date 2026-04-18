@@ -56,6 +56,22 @@ function dedupeElementsById<T extends { id: string }>(elements: T[]): T[] {
   return Array.from(deduped.values());
 }
 
+function normalizePathForComparison(filePath: string): string {
+  return resolve(filePath).replace(/\\/g, "/").replace(/\/+$/, "");
+}
+
+export function isPathInsideDir(parentDir: string, targetPath: string): boolean {
+  const normalizedParent = normalizePathForComparison(parentDir);
+  const normalizedTarget = normalizePathForComparison(targetPath);
+  return normalizedTarget === normalizedParent || normalizedTarget.startsWith(`${normalizedParent}/`);
+}
+
+export function toExternalAssetKey(absPath: string): string {
+  const normalized = resolve(absPath).replace(/\\/g, "/").replace(/^\/+/, "");
+  const portable = normalized.replace(/^([A-Za-z]):/, "$1");
+  return `hf-ext/${portable}`;
+}
+
 async function resolveMediaDuration(
   src: string,
   mediaStart: number,
@@ -804,12 +820,12 @@ export function collectExternalAssets(
       return null;
     }
     const absPath = resolve(absProjectDir, trimmed);
-    if (absPath.startsWith(absProjectDir + "/") || absPath === absProjectDir) {
+    if (isPathInsideDir(absProjectDir, absPath)) {
       return null; // inside projectDir, file server handles this
     }
     if (!existsSync(absPath)) return null;
     // resolve() already canonicalizes the path (no .. components remain)
-    const safeKey = "hf-ext/" + absPath.replace(/^\//, "");
+    const safeKey = toExternalAssetKey(absPath);
     externalAssets.set(safeKey, absPath);
     return safeKey;
   }

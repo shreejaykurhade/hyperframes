@@ -81,23 +81,6 @@ npx hyperframes render       # render to MP4
 - **Deterministic rendering** — same input = identical output. Built for automated pipelines.
 - **Frame Adapter pattern** — bring your own animation runtime (GSAP, Lottie, CSS, Three.js).
 
-## HyperFrames vs. Remotion
-
-[Remotion](https://github.com/remotion-dev/remotion) is an excellent React-based video framework, and parts of HyperFrames are intentionally inspired by it. The comparison below is based on the projects' official READMEs and license pages:
-
-| Topic | HyperFrames | Remotion |
-| --- | --- | --- |
-| Authoring model | HTML compositions with `data-*` attributes, described in the [HyperFrames README](https://github.com/heygen-com/hyperframes) as "HTML-based video compositions" with "No React" | React components and JSX, described in the [Remotion README](https://github.com/remotion-dev/remotion) as "videos programmatically using React" |
-| Best fit | Teams that want an HTML-first, agent-friendly workflow with deterministic rendering, as described in the [HyperFrames README](https://github.com/heygen-com/hyperframes) | Teams that already want a React-first workflow and value the React strengths listed in the [Remotion README](https://github.com/remotion-dev/remotion) |
-| Pros | Officially emphasizes HTML-native authoring, AI-first workflows, deterministic rendering, frame adapters, and an [Apache 2.0 license](https://github.com/heygen-com/hyperframes/blob/main/LICENSE) | Officially emphasizes React benefits such as reusable components, composition, Fast Refresh, package ecosystem, and a large [documentation surface](https://remotion.dev/docs) |
-| Cons | Less ideal if your team specifically wants to author videos as React components | Less ideal if you want to avoid React entirely; [Remotion's license](https://github.com/remotion-dev/remotion/blob/main/LICENSE.md) also notes that a company license is required in some cases |
-
-In practice:
-
-- Choose **HyperFrames** if you want video authoring to feel like HTML/CSS, especially when AI agents are generating or editing compositions.
-- Choose **Remotion** if your team already thinks in React and wants to reuse that component model directly for video.
-- If you're deciding between them, the biggest question is usually **HTML-first workflow vs. React-first workflow**, not rendering quality.
-
 ## How It Works
 
 Define your video as HTML with data attributes:
